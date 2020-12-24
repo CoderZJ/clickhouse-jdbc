@@ -1,6 +1,7 @@
 package ru.yandex.clickhouse.util;
 
 import ru.yandex.clickhouse.ClickHouseArray;
+import ru.yandex.clickhouse.ClickHouseTuple;
 import ru.yandex.clickhouse.ClickHouseUtil;
 
 import java.math.BigDecimal;
@@ -111,6 +112,9 @@ public final class ClickHouseValueFormatter {
     public static String formatUUID(UUID x) {
         return x.toString();
     }
+    public static String formatTuple(ClickHouseTuple tuple) {
+        return tuple.getValue();
+    }
 
     public static String formatBigInteger(BigInteger x) {
         return x.toString();
@@ -152,6 +156,8 @@ public final class ClickHouseValueFormatter {
             return formatUUID((UUID) x);
         } else if (x instanceof BigInteger) {
             return formatBigInteger((BigInteger) x);
+        } else if (x instanceof ClickHouseTuple) {
+            return formatTuple((ClickHouseTuple) x);
         } else if (x instanceof Collection) {
             return ClickHouseArrayUtil.toString((Collection) x, dateTimeZone, dateTimeTimeZone);
         } else if (x.getClass().isArray()) {
@@ -175,6 +181,9 @@ public final class ClickHouseValueFormatter {
             return false;
         }
         if (o instanceof ClickHouseArray) {
+            return false;
+        }
+        if (o instanceof ClickHouseTuple) {
             return false;
         }
         if (o instanceof Collection) {
